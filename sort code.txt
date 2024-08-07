@@ -1,57 +1,54 @@
-bubble sort
+import random
+import matplotlib.pyplot as plt
 
-#include <stdio.h>
-int main(){
-    int arr[6]={5, 3, 4, 2, 6, 1},n,i,j,temp;
-    for (i = 0; i <6; i++) {
-        for (j = 0; j <5; j++) {
-            if (arr[j] > arr[j+1]) {
-                temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
-            }
-        }
-    }
-    printf("sorted array \n");
-    for (i = 0; i <6; i++) {
-        printf("%d ", arr[i]);
-    }
-    printf("\n");
-    return 0;
-}
+def bubble_sort(arr):
+    n = len(arr)
+    step = 0
+    for i in range(n):
+        for j in range(0,n-i-1):
+            step += 1
+            if arr[j] > arr[j+1]:
+                arr[j],arr[j+1] = arr[j+1],arr[j]
+                step += 1
+    return step
+
+def selection_sort(arr):
+    n = len(arr)
+    step = 0
+    for i in range(n):
+        min_i = i
+        step += 1
+        for j in range (i+1,n):
+            step += 1
+            if arr[j] < arr[min_i]:
+                min_i = j
+                step += 1
+        arr[i],arr[min_i] = arr[min_i],arr[i]
+        step += 1
+    return step
+
+arr = []
+step_bubble = []
+step_selection = []
+size_arr = []
+size = 100
+x = 10
+while x <= size:
+    for j in range(x):
+        z = int(random.randint(1,99))
+        arr.append(z)
+    sb = bubble_sort(arr)
+    ss = selection_sort(arr)
+    step_bubble.append(sb)
+    step_selection.append(ss)
+    x = x+10
+
+x = 10
+while x < 101:
+    size_arr.append(x)
+    x = x+10
 
 
-selection sort
-
-#include <stdio.h>
-void selectionSort(int arr[], int n) {
-    int i, j, minIndex, temp;
-    for (i = 0; i < n-1; i++) {
-        minIndex = i;
-        for (j = i+1; j < n; j++) {
-            if (arr[j] < arr[minIndex]) {
-                minIndex = j;
-            }
-        }
-        temp = arr[minIndex];
-        arr[minIndex] = arr[i];
-        arr[i] = temp;
-    }
-}
-void printArray(int arr[], int size) {
-    int i;
-    for (i = 0; i < size; i++) {
-        printf("%d ", arr[i]);
-    }
-    printf("\n");
-}
-int main() {
-    int arr[] = {10,4,35,6,8};
-    int n = sizeof(arr) / sizeof(arr[0]);
-    printf("Original array: \n");
-    printArray(arr, n);
-    selectionSort(arr, n);
-    printf("Sorted array: \n");
-    printArray(arr, n);
-    return 0;
-}
+plt.plot(size_arr,step_bubble)
+plt.plot(size_arr,step_selection)
+plt.show()
