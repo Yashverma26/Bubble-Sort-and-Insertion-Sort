@@ -1,54 +1,49 @@
+import time
 import random
 import matplotlib.pyplot as plt
 
+# Bubble Sort implementation
 def bubble_sort(arr):
     n = len(arr)
-    step = 0
     for i in range(n):
-        for j in range(0,n-i-1):
-            step += 1
+        for j in range(0, n-i-1):
             if arr[j] > arr[j+1]:
-                arr[j],arr[j+1] = arr[j+1],arr[j]
-                step += 1
-    return step
+                arr[j], arr[j+1] = arr[j+1], arr[j]
 
+# Selection Sort implementation
 def selection_sort(arr):
     n = len(arr)
-    step = 0
     for i in range(n):
-        min_i = i
-        step += 1
-        for j in range (i+1,n):
-            step += 1
-            if arr[j] < arr[min_i]:
-                min_i = j
-                step += 1
-        arr[i],arr[min_i] = arr[min_i],arr[i]
-        step += 1
-    return step
+        min_idx = i
+        for j in range(i+1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
 
-arr = []
-step_bubble = []
-step_selection = []
-size_arr = []
-size = 100
-x = 10
-while x <= size:
-    for j in range(x):
-        z = int(random.randint(1,99))
-        arr.append(z)
-    sb = bubble_sort(arr)
-    ss = selection_sort(arr)
-    step_bubble.append(sb)
-    step_selection.append(ss)
-    x = x+10
+# Function to measure the time taken by a sorting algorithm
+def time_sort(sort_func, arr):
+    start_time = time.time()
+    sort_func(arr.copy())
+    end_time = time.time()
+    return end_time - start_time
 
-x = 10
-while x < 101:
-    size_arr.append(x)
-    x = x+10
+# Generating the data for the graph
+sizes = list(range(100, 1100, 100))
+bubble_sort_times = []
+selection_sort_times = []
 
+for size in sizes:
+    arr = random.sample(range(size*10), size)
+    bubble_sort_times.append(time_sort(bubble_sort, arr))
+    selection_sort_times.append(time_sort(selection_sort, arr))
 
-plt.plot(size_arr,step_bubble)
-plt.plot(size_arr,step_selection)
+# Plotting the time complexity graph
+plt.figure(figsize=(10, 6))
+plt.plot(sizes, bubble_sort_times, label='Bubble Sort', marker='o')
+plt.plot(sizes, selection_sort_times, label='Selection Sort', marker='o')
+plt.title('Time Complexity of Bubble Sort vs Selection Sort')
+plt.xlabel('Input Size')
+plt.ylabel('Time (seconds)')
+plt.legend()
+plt.grid(True)
 plt.show()
