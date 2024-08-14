@@ -6,6 +6,14 @@ import matplotlib.pyplot as plt
 def bubble_sort(arr):
     n = len(arr)
     for i in range(n):
+        swap = False  # Initialize swap flag
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+                swap = True  # A swap occurred
+        if not swap:  # No swaps occurred, array is sorted
+            break
+    for i in range(n):
         for j in range(0, n-i-1):
             if arr[j] > arr[j+1]:
                 arr[j], arr[j+1] = arr[j+1], arr[j]
@@ -15,10 +23,14 @@ def selection_sort(arr):
     n = len(arr)
     for i in range(n):
         min_idx = i
+        swap = False  # Initialize swap flag
         for j in range(i+1, n):
             if arr[j] < arr[min_idx]:
                 min_idx = j
-        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+                swap = True  # A swap will occur
+        if swap:  # Perform the swap if needed
+            arr[i], arr[min_idx] = arr[min_idx], arr[i]
+
 
 # Function to measure the time taken by a sorting algorithm
 def time_sort(sort_func, arr):
